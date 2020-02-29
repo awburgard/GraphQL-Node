@@ -113,16 +113,9 @@ export type LinkOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface LinkCreateInput {
-  id?: Maybe<ID_Input>;
-  description: String;
-  url: String;
-}
-
-export interface LinkUpdateInput {
-  description?: Maybe<String>;
-  url?: Maybe<String>;
-}
+export type LinkWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface LinkWhereInput {
   id?: Maybe<ID_Input>;
@@ -180,6 +173,17 @@ export interface LinkWhereInput {
   NOT?: Maybe<LinkWhereInput[] | LinkWhereInput>;
 }
 
+export interface LinkCreateInput {
+  id?: Maybe<ID_Input>;
+  description: String;
+  url: String;
+}
+
+export interface LinkUpdateInput {
+  description?: Maybe<String>;
+  url?: Maybe<String>;
+}
+
 export interface LinkUpdateManyMutationInput {
   description?: Maybe<String>;
   url?: Maybe<String>;
@@ -196,45 +200,8 @@ export interface LinkSubscriptionWhereInput {
   NOT?: Maybe<LinkSubscriptionWhereInput[] | LinkSubscriptionWhereInput>;
 }
 
-export type LinkWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
 export interface NodeNode {
   id: ID_Output;
-}
-
-export interface LinkEdge {
-  node: Link;
-  cursor: String;
-}
-
-export interface LinkEdgePromise extends Promise<LinkEdge>, Fragmentable {
-  node: <T = LinkPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface LinkEdgeSubscription
-  extends Promise<AsyncIterator<LinkEdge>>,
-    Fragmentable {
-  node: <T = LinkSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
 }
 
 export interface Link {
@@ -267,31 +234,6 @@ export interface LinkNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   description: () => Promise<String>;
   url: () => Promise<String>;
-}
-
-export interface LinkSubscriptionPayload {
-  mutation: MutationType;
-  node: Link;
-  updatedFields: String[];
-  previousValues: LinkPreviousValues;
-}
-
-export interface LinkSubscriptionPayloadPromise
-  extends Promise<LinkSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = LinkPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = LinkPreviousValuesPromise>() => T;
-}
-
-export interface LinkSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<LinkSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = LinkSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = LinkPreviousValuesSubscription>() => T;
 }
 
 export interface LinkConnection {
@@ -338,6 +280,23 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface LinkEdge {
+  node: Link;
+  cursor: String;
+}
+
+export interface LinkEdgePromise extends Promise<LinkEdge>, Fragmentable {
+  node: <T = LinkPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LinkEdgeSubscription
+  extends Promise<AsyncIterator<LinkEdge>>,
+    Fragmentable {
+  node: <T = LinkSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
 export interface AggregateLink {
   count: Int;
 }
@@ -352,6 +311,47 @@ export interface AggregateLinkSubscription
   extends Promise<AsyncIterator<AggregateLink>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface LinkSubscriptionPayload {
+  mutation: MutationType;
+  node: Link;
+  updatedFields: String[];
+  previousValues: LinkPreviousValues;
+}
+
+export interface LinkSubscriptionPayloadPromise
+  extends Promise<LinkSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = LinkPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LinkPreviousValuesPromise>() => T;
+}
+
+export interface LinkSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LinkSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LinkSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LinkPreviousValuesSubscription>() => T;
 }
 
 export interface LinkPreviousValues {
@@ -380,21 +380,6 @@ export interface LinkPreviousValuesSubscription
 }
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
@@ -409,6 +394,21 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 export type Long = string;
 

@@ -12,6 +12,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/austin-burgard-6fee5e/hackernews-node/dev`
+  endpoint: `https://us1.prisma.sh/austin-burgard-6fee5e/GraphQL-Node/dev`
 });
 exports.prisma = new exports.Prisma();
